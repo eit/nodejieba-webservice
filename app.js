@@ -3,12 +3,19 @@ var nodejieba = require("nodejieba");
 var bodyParser = require('body-parser');
 
 var app = express();
+app.use(bodyParser.json({limit: '5mb'}));
+app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
+
 var queryParser = bodyParser.text();
 nodejieba.load({
   dict: './dict/dict.txt.big',
 });
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+app.get('/', function (req, res) {
+    res.status(404);
+});
 
 app.post('/cut', urlencodedParser, function (req, res) {
   if (!req.body) return res.sendStatus(400);
